@@ -9,7 +9,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-sm rounded-2xl border-2 border-gray-200 shadow-sm bg-white">
+      <div className="w-full max-w-sm rounded-2xl border-2 border-pink-400 shadow-sm">
         <div className="p-5">
           <h1 className="text-center text-2xl font-semibold text-pink-500 mb-5">
             Trade
