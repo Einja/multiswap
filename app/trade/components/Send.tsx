@@ -7,7 +7,7 @@ const Send = () => {
   return (
     <div className="space-y-4">
       <div>
-        <label className="text-xs font-medium text-gray-600">You're sending</label>
+        <label className="text-xs font-medium text-gray-600">You are sending</label>
         <div className="mt-1 text-center bg-gray-50 rounded-xl border border-gray-200 px-4 py-6">
           <p className="text-2xl font-medium text-gray-900">${amount || 0}</p>
           <p className="mt-1 text-xs text-gray-500">{amount || 0} {sendToken.toUpperCase()} ⇅</p>
