@@ -23,10 +23,10 @@ const Buy = () => {
 
   const handleBuy = async () => {
     if (!address) return connect();
-    if (!window.ethereum) return alert("No injected wallet found");
+    if (!(window as any).ethereum) return alert("No injected wallet found");
 
     // Setup ethers provider & signer
-    const provider = new BrowserProvider(window.ethereum);
+    const provider = new BrowserProvider((window as any).ethereum);
     const signer = await provider.getSigner();
 
     // Instantiate your buyer contract
