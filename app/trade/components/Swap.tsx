@@ -1,8 +1,18 @@
+"use client";
 import React, { useState } from "react";
+import { useWallet } from "@/components/contexts/WalletContext";
 
 const Swap = () => {
+  const { address, connect } = useWallet();
   const [sellToken, setSellToken] = useState("eth");
   const [buyToken, setBuyToken] = useState("pol");
+  const handleSwap = () => {
+    if (!address) {
+      return connect();
+    }
+    // ... your existing swap logic here
+    console.log("Swapping", sellToken, "for", buyToken);
+  }
   return (
     <div className="space-y-4">
       <div>
@@ -50,8 +60,8 @@ const Swap = () => {
         </div>
       </div>
 
-      <button className="cursor-pointer w-full mt-2 py-3 text-sm font-semibold text-pink-500 bg-pink-50 rounded-xl hover:bg-pink-100">
-        Connect wallet
+      <button onClick={handleSwap} className="cursor-pointer w-full mt-2 py-3 text-sm font-semibold text-pink-500 bg-pink-50 rounded-xl hover:bg-pink-100">
+        {address ? "Swap" : "Connect Wallet"}
       </button>
     </div>
   );

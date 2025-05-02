@@ -1,9 +1,17 @@
+"use client";
 import React, { useState } from "react";
-
+import { useWallet } from "@/components/contexts/WalletContext";
 const Send = () => {
+  const { address, connect } = useWallet();
   const [sendToken, setSendToken] = useState("eth");
   const [amount, setAmount] = useState("");
-
+  const handleSend = () => {
+    if (!address) {
+      return connect();
+    }
+    // … your existing send logic here
+    console.log("Buying", amount);
+  };
   return (
     <div className="space-y-4">
       <div>
@@ -17,10 +25,15 @@ const Send = () => {
       <div>
         <label className="text-xs font-medium text-gray-600">Amount</label>
         <input
-          type="number"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="0"
+          type="text"
+          inputMode="decimal"
+          placeholder="$"
+          value={amount ? `$${amount}` : ""}
+          onChange={(e) => {
+            // strip out anything that isn’t a digit or dot
+            const raw = e.currentTarget.value.replace(/[^0-9.]/g, "");
+            setAmount(raw);
+          }}
           className="w-full mt-1 bg-gray-50 rounded-xl border border-gray-200 px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none"
         />
       </div>
@@ -47,8 +60,8 @@ const Send = () => {
         />
       </div>
 
-      <button className="cursor-pointer w-full mt-2 py-3 text-sm font-semibold text-pink-500 bg-pink-50 rounded-xl hover:bg-pink-100">
-        Connect wallet
+      <button onClick={handleSend} className="cursor-pointer w-full mt-2 py-3 text-sm font-semibold text-pink-500 bg-pink-50 rounded-xl hover:bg-pink-100">
+      {address ? "Send" : "Connect Wallet"}
       </button>
     </div>
   );

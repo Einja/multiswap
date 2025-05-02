@@ -3,10 +3,12 @@ import React, { useState } from "react";
 import Swap from "./components/Swap";
 import Buy from "./components/Buy";
 import Send from "./components/Send";
+import { useWallet } from "@/components/contexts/WalletContext";
 
 export default function Page() {
-  const [activeTab, setActiveTab] = useState("swap");
-
+  const [activeTab, setActiveTab] = useState<"swap" | "buy" | "send">("swap");
+  const { address, connect } = useWallet();
+  
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-sm rounded-2xl border-2 border-pink-400 shadow-sm">
