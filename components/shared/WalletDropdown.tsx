@@ -33,17 +33,9 @@ const WalletDropdown: React.FC = () => {
 
       {open && (
         <div className="absolute right-0 mt-2 w-48 bg-white rounded shadow-lg p-4">
-            <h3 className="font-semibold text-gray-800 mb-2">Balances</h3>
+            <h3 className="font-semibold text-gray-800 mb-2">Balance</h3>
           <ul className="mb-2 text-gray-800 space-y-1">
             <li>ETH: {balance !== null ? `${balance}` : "Loading…"}</li>
-            <li>
-              POLY: {/* placeholder */}
-              0.000
-            </li>
-            <li>
-              AVAX: {/* placeholder */}
-              0.000
-            </li>
           </ul>
           <button
             onClick={() => {
