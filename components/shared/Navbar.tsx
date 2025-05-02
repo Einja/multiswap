@@ -1,44 +1,32 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
+import { useWallet } from "@/components/contexts/WalletContext";
 
+export default function Navbar() {
+  const { address, connect } = useWallet();
 
-const Navbar: React.FC = () => {
   return (
-    <nav
-      className="p-4 relative top-0 left-0 z-50 w-full"
-      style={{
-        backgroundColor: "var(--background-color2)",
-        transition: "background-color 0.3s, color 0.3s",
-      }}
-    >
-      <div className="w-full px-4 flex justify-between items-center">
+    <nav className="p-4 z-50 w-full" style={{ backgroundColor: "var(--bg2)" }}>
+      <div className="flex justify-between items-center">
         <ul className="flex space-x-8">
-          <li>
-            <Link href="/" className="hover:text-gray-300">
-              {"Home"}
-            </Link>
-          </li>
-          <li>
-            <Link href="/explore" className="hover:text-gray-300">
-              {"Explore"}
-            </Link>
-          </li>
-          <li>
-            <Link href="/pool" className="hover:text-gray-300">
-              {"Pool"}
-            </Link>
-          </li>
-          <li>
-            <Link href="/trade" className="hover:text-gray-300">
-              {"Trade"}
-            </Link>
-          </li>
+          <li><Link href="/">Home</Link></li>
+          <li><Link href="/explore">Explore</Link></li>
+          <li><Link href="/trade">Trade</Link></li>
         </ul>
 
+        {address ? (
+          <span>{`${address.slice(0, 6)}…${address.slice(-4)}`}</span>
+        ) : (
+          <button
+            onClick={connect}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            Connect Wallet
+          </button>
+        )}
       </div>
     </nav>
   );
-};
-
-export default Navbar;
+}
