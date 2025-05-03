@@ -8,8 +8,12 @@ module.exports = {
     artifacts: "./artifacts",
   },
   networks: {
+    mainnet: {
+      url: process.env.RPC_MAINNET_URL,
+      accounts: [process.env.METAMASK_PRIVATE_KEY],
+    },
     sepolia: {
-      url: process.env.RPC_URL,
+      url: process.env.RPC_SEPOLIA_URL,
       accounts: [process.env.METAMASK_PRIVATE_KEY],
     },
   },

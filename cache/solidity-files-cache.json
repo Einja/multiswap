@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "C:\\Users\\aethe\\OneDrive\\Desktop\\CODE\\multiswap\\contracts\\BuyETH.sol": {
-      "lastModificationDate": 1746220378489,
-      "contentHash": "1c7ecf2b66e0e2fb7a3c7f7fe460a492",
+      "lastModificationDate": 1746230611214,
+      "contentHash": "f2640b34bb3cb7320a6f31dd75c5574e",
       "sourceName": "contracts/BuyETH.sol",
       "solcConfig": {
         "version": "0.8.28",
@@ -30,8 +30,7 @@
         }
       },
       "imports": [
-        "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol",
-        "@openzeppelin/contracts/token/ERC20/IERC20.sol"
+        "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol"
       ],
       "versionPragmas": [
         "^0.8.28"

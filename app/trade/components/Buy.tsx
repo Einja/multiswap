@@ -8,11 +8,13 @@ const TOKEN_MAP: Record<
   "poly" | "eth" | "avax",
   { address: string; decimals: number }
 > = {
-  // replace these placeholders with the real token addresses
-  poly: { address: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0", decimals: 18 },
-  eth: { address: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",     decimals: 18 },
-  avax: { address: "0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7",    decimals: 18 },
+  // replace these placeholders with the real Sepolia token addresses:
+  poly: { address: "0x07894fCafD51c15359A29ebd2641C402A1B8E86e", decimals: 18 },
+  eth: { address: "0x1331b9D51153Df9b9174c847ee08eFd4817a5a1e", decimals: 18 },
+  avax: { address: "0xBB67905f698b1E5d9E13cBe9365662CA81bF801f", decimals: 18 },
 };
+
+const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_ETHBUYER_ADDRESS!;
 
 const Buy = () => {
   const { address, connect } = useWallet();
@@ -22,6 +24,7 @@ const Buy = () => {
   );
 
   const handleBuy = async () => {
+    
     if (!address) return connect();
     if (!(window as any).ethereum) return alert("No injected wallet found");
 
@@ -31,40 +34,36 @@ const Buy = () => {
 
     // Instantiate your buyer contract
     const buyer = new Contract(
-      process.env.NEXT_PUBLIC_ETHBUYER_ADDRESS!,
+      CONTRACT_ADDRESS,
       EthBuyerABI.abi,
       signer
     );
 
     // Look up the token address & decimals from our map
-    const { address: tokenAddress, decimals: tokenDecimals } =
-      TOKEN_MAP[selectedToken];
+    const { address: tokenAddress } = TOKEN_MAP[selectedToken];
 
-    // Prepare amounts
-    const amountIn = parseUnits(amount || "0", tokenDecimals);
-    if (amountIn <= 0) return alert("Enter an amount greater than zero");
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
-    const minEthOut = 0; // replace with slippage‐adjusted quote in prod
+    // Parse the ETH amount to spend
+    const ethAmount = parseUnits(amount || "0", 18);
+    console.log(ethAmount.toString());
+    if (ethAmount <= 0) {
+      return alert("Enter an amount greater than zero");
+    }
 
     // Approve
-    const erc20 = new Contract(
-      tokenAddress,
-      ["function approve(address spender, uint256 amount) external returns (bool)"],
-      signer
-    );
-    const txA = await erc20.approve(buyer.target, amountIn);
-    await txA.wait();
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
+    const minTokens = 0; 
 
     // Swap in one on‐chain call
-    const txB = await buyer.buyETH(
+    const tx = await buyer.buyTokens(
       tokenAddress,
-      amountIn,
-      minEthOut,
-      deadline
+      minTokens,
+      deadline,
+      { value: ethAmount, gasLimit: 1000000 }
     );
-    console.log("tx hash:", txB.hash);
-    await txB.wait();
-    alert("Bought ETH! Check your wallet balance.");
+    console.log("buyTokens tx hash:", tx.hash);
+    await tx.wait();
+
+    alert("Bought tokens! Check your wallet balance.");
   };
 
   return (
@@ -86,13 +85,13 @@ const Buy = () => {
 
       <div>
         <label className="text-xs font-medium text-gray-600">
-          Amount in $
+          Amount in ETH
         </label>
         <input
           type="text"
           inputMode="decimal"
-          placeholder="$"
-          value={amount ? `$${amount}` : ""}
+          placeholder="0.0"
+          value={amount}
           onChange={(e) => {
             const raw = e.currentTarget.value.replace(/[^0-9.]/g, "");
             setAmount(raw);
